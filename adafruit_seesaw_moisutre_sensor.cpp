@@ -1,0 +1,30 @@
+#include "moisture_sensor.h"
+
+// From the Adafruit documentation were 200 is very dry and 2000 is very wet.
+// https://www.adafruit.com/product/4026#technical-details
+#define DEFAULT_LOWER_CAPATIENCE 200
+#define DEFAULT_UPPER_CAPATIENCE 2000
+
+MoistureSensor::MoistureSensor(Adafruit_seesaw ss) 
+{
+  this->ss = ss;
+  this->lowerCapatience = DEFAULT_LOWER_CAPATIENCE;
+  this->upperCapatience = DEFAULT_UPPER_CAPATIENCE;
+}
+
+float MoistureSensor::GetTemperature()
+{
+  return this->ss.getTemp();
+}
+
+double MoistureSensor::GetMoisture()
+{
+  uint16_t capatience = this->ss.touchRead(0);
+
+  // bind the capatience in the calibrated ranges.
+  capatience = constrain(capatience, this->lowerCapatience, this->upperCapatience);
+
+  double moisturePercentage = ((double)(capatience - this->lowerCapatience) / (this->upperCapatience - this->lowerCapatience)) * 100.0;
+  
+  return constrain(moisturePercentage, 0.0, 100.0);
+}
