@@ -2,8 +2,17 @@
 #define MOISTURE_SENSOR_H_
 
 #include <Arduino.h>
+#include "Adafruit_seesaw.h"
 
 class MoistureSensor {
+  private:
+    Adafruit_seesaw ss;
+    uint16_t lowerCapatience;
+    uint16_t upperCapatience;
+
+  public:
+    MoistureSensor(Adafruit_seesaw ss);
+
     /**
      * Get the temperature in degrees Celsius.
      * 
