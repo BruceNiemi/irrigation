@@ -5,9 +5,7 @@
 #define DEFAULT_LOWER_CAPATIENCE 200
 #define DEFAULT_UPPER_CAPATIENCE 2000
 
-MoistureSensor::MoistureSensor(Adafruit_seesaw ss) 
-{
-  this->ss = ss;
+MoistureSensor::MoistureSensor(Adafruit_seesaw seesaw) : ss(seesaw){
   this->lowerCapatience = DEFAULT_LOWER_CAPATIENCE;
   this->upperCapatience = DEFAULT_UPPER_CAPATIENCE;
 }
