@@ -9,10 +9,9 @@ class MoistureSensor {
      * 
      * This function retrieves the current temperature from the moisutre sensor.
      * 
-     * @return the temperature in degrees Celsius, or an error value if the sensor
-     *         is unable to providee a reading ()
-    */  
-    virtual float GetTemperature() = 0;
+     * @return the temperature in degrees Celsius.
+     */  
+    float GetTemperature();
 
     /**
       * Get the moisture level as percentage.
@@ -21,7 +20,14 @@ class MoistureSensor {
       * 
       * @return The moisutre level as percentage.
       */
-    virtual double GetMoisture() = 0;
+    double GetMoisture();
+
+    /**
+     * Checks if the moisture sensor is connected.
+     * 
+     * @return true if the sensor is connected, false otherwise.
+     */
+    bool IsConnected();
 };
 
 #endif // MOISTURE_SENSOR_H_
