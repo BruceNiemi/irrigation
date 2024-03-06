@@ -6,6 +6,7 @@
 #define DEBUG
 
 Adafruit_seesaw ss;
+MoistureSensor* sensor = nullptr;
 
 /**
  * The setup function is the main entry point, called once by the Arduino platform,
@@ -13,6 +14,7 @@ Adafruit_seesaw ss;
  */
 void setup() {
   // Magic number provided by Adafruit sample code for the Capative moisture sensor.
+  // It's the Baud rate but the comment is more funny.
   Serial.begin(115200);
 
   // Due to wantting reliability in the software if no sensor is found
@@ -20,15 +22,23 @@ void setup() {
   // to water source control.
   if (ss.begin(I2C_ADDRESS)) {
     #ifdef DEBUG
-    Serial.println("Using sensor");
+    log("moisture sensor detected");
     #endif
 
-    MoistureSensor sensor(ss);
+    sensor = new MoistureSensor(ss);
   } else {
     #ifdef DEBUG
-    Serial.println("Using timer");
+    Serial.println("moisture sensor not found");
     #endif
   }
 }
 
-void loop() {}
+#ifdef DEBUG
+void log(String message) {
+  Serial.println("INFO: " + message);
+}
+#endif
+
+void loop() {
+
+}

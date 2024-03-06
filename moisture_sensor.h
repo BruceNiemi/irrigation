@@ -11,7 +11,7 @@ class MoistureSensor {
   uint16_t upperCapatience;
 
  public:
-  MoistureSensor(Adafruit_seesaw ss);
+  MoistureSensor(Adafruit_seesaw& ss);
 
   /**
      * Get the temperature in degrees Celsius.

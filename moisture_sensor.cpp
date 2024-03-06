@@ -5,7 +5,7 @@
 #define DEFAULT_LOWER_CAPATIENCE 200
 #define DEFAULT_UPPER_CAPATIENCE 2000
 
-MoistureSensor::MoistureSensor(Adafruit_seesaw seesaw) : ss(seesaw) {
+MoistureSensor::MoistureSensor(Adafruit_seesaw& seesaw) : ss(seesaw) {
   this->lowerCapatience = DEFAULT_LOWER_CAPATIENCE;
   this->upperCapatience = DEFAULT_UPPER_CAPATIENCE;
 }
@@ -21,10 +21,5 @@ double MoistureSensor::GetMoisture() {
   capatience =
       constrain(capatience, this->lowerCapatience, this->upperCapatience);
 
-  double moisturePercentage =
-      ((double)(capatience - this->lowerCapatience) /
-       (this->upperCapatience - this->lowerCapatience)) *
-      100.0;
-
-  return constrain(moisturePercentage, 0.0, 100.0);
+  return ((double)(capatience - this->lowerCapatience) / (this->upperCapatience - this->lowerCapatience));
 }
