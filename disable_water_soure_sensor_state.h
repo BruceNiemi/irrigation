@@ -1,8 +1,8 @@
 #ifndef DISABLE_WATER_SOURCE_SENSOR_STATE_H_
 #define DISABLE_WATER_SOURCE_SENSOR_STATE_H_
 
-#include "state.h"
 #include "moisture_sensor.h"
+#include "state.h"
 
 class DisableWaterSourceState : public State {
  private:
@@ -14,4 +14,4 @@ class DisableWaterSourceState : public State {
   virtual State* execute() override;
 };
 
-#endif //DISABLE_WATER_SOURCE_SENSOR_STATE_H_
+#endif  //DISABLE_WATER_SOURCE_SENSOR_STATE_H_

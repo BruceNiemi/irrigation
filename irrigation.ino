@@ -1,6 +1,7 @@
 #include "moisture_sensor.h"
 #include "state.h"
 #include "idle_timer_state.h"
+#include "idle_sensor_state.h"
 
 // Reading the documentation this is the default I2C address for the sensor
 // https://cdn-learn.adafruit.com/downloads/pdf/adafruit-stemma-soil-sensor-i2c-capacitive-moisture-sensor.pdf
@@ -25,12 +26,13 @@ void setup() {
   // Due to wantting reliability in the software if no sensor is found
   // during the initalizing process we will use a fallback timer based approach
   // to water source control.
-  if (false) {
+  if (ss.begin(I2C_ADDRESS)) {
 #ifdef DEBUG
     log("moisture sensor detected");
 #endif
 
     sensor = new MoistureSensor(ss);
+    current = (State*) new IdleSensorState(sensor);
   } else {
 #ifdef DEBUG
     Serial.println("moisture sensor not found");
