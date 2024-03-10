@@ -1,11 +1,11 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card"
 
-const DisplayCard = ({title, value, description}: {
+const DisplayCard = ({ title, value, description }: {
     title: string,
     value: string,
     description: string
@@ -27,4 +27,4 @@ const DisplayCard = ({title, value, description}: {
     )
 }
 
-export {DisplayCard}
+export { DisplayCard }
