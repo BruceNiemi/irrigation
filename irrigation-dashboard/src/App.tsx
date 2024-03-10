@@ -92,7 +92,7 @@ const moisture_data = [
 
 function App() {
   return (
-    <div className='space-y-4'>
+    <div className='m-4 space-y-7'>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <DisplayCard
           title="State"
@@ -120,10 +120,10 @@ function App() {
             </CardHeader>
             <CardContent className="pl-2">
               <Chart
-                x = "moisture"
-                xAxisKey = "time"
+                x="moisture"
+                xAxisKey="time"
                 yAxisLabel='Moisture Content (%)'
-                data = {moisture_data}
+                data={moisture_data}
               />
             </CardContent>
           </Card>
@@ -133,10 +133,10 @@ function App() {
             </CardHeader>
             <CardContent className='pl-2'>
               <Chart
-                x = "temp"
-                xAxisKey = "time"
-                yAxisLabel = "Temperature (°C)"
-                data = {temp_data}
+                x="temp"
+                xAxisKey="time"
+                yAxisLabel="Temperature (°C)"
+                data={temp_data}
               />
             </CardContent>
           </Card>
