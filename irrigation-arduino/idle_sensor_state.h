@@ -13,6 +13,8 @@ class IdleSensorState : public State {
   IdleSensorState(MoistureSensor* sensor) : sensor(sensor) {}
   virtual void enter() override;
   virtual State* execute() override;
+
+  virtual const String name() override { return "Idle"; };
 };
 
 #endif  //IDLE_SENSOR_STATE_H_

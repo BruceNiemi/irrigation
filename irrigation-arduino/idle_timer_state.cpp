@@ -9,7 +9,7 @@ void IdleTimerState::enter() {
 
 State* IdleTimerState::execute() {
   if (millis() > this->lastMillis + DELAY_IN_MILLIS) {
-    Serial.println("transitioning to enable water source");
+  //  Serial.println("transitioning to enable water source");
     return new EnableWaterSourceTimer();
   }
 

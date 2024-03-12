@@ -13,6 +13,8 @@ class IdleTimerState : public State {
  public:
   virtual void enter() override;
   virtual State* execute() override;
+
+  virtual const String name() override { return "Idle"; };
 };
 
 #endif  //IDLE_TIMER_STATE_H_

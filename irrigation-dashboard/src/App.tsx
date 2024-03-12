@@ -1,115 +1,72 @@
 import './App.css'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card'
 import { DisplayCard } from './components/ui/displaycard'
 import { Chart } from './components/ui/chart'
 
-const temp_data = [
-  {
-    time: "8:00",
-    temp: 30.5
-  },
-  {
-    time: "9:00",
-    temp: 32.4
-  },
-  {
-    time: "10:00",
-    temp: 20.6
-  },
-  {
-    time: "11:00",
-    temp: 25.2
-  },
-  {
-    time: "12:00",
-    temp: 28.0
-  },
-  {
-    time: "13:00",
-    temp: 26.8
-  },
-  {
-    time: "14:00",
-    temp: 29.5
-  },
-  {
-    time: "15:00",
-    temp: 31.2
-  },
-  {
-    time: "16:00",
-    temp: 27.4
-  },
-  {
-    time: "17:00",
-    temp: 23.8
-  }
-]
+interface SensorData {
+  timestamp: string;
+  moisture: number;
+  temperature: number;
+}
 
-const moisture_data = [
-  {
-    time: "08:00",
-    moisture: 0.6
-  },
-  {
-    time: "09:00",
-    moisture: 0.3
-  },
-  {
-    time: "10:00",
-    moisture: 0.8
-  },
-  {
-    time: "11:00",
-    moisture: 0.4
-  },
-  {
-    time: "12:00",
-    moisture: 0.6
-  },
-  {
-    time: "13:00",
-    moisture: 0.7
-  },
-  {
-    time: "14:00",
-    moisture: 0.5
-  },
-  {
-    time: "15:00",
-    moisture: 0.9
-  },
-  {
-    time: "16:00",
-    moisture: 0.3
-  },
-  {
-    time: "17:00",
-    moisture: 0.2
-  }
-];
-
+interface Info {
+  state: string;
+  valve: boolean;
+  sensor: SensorData | null;
+}
 
 function App() {
+  const [moistureData, setMoistureData] = useState<number[]>([]);
+  const [temperatureData, setTemperatureData] = useState<number[]>([]);
+  const [timestamps, setTimestamps] = useState<string[]>([]);
+  const [systemState, setSystemState] = useState<string>("Unknown");
+  const [operationMode, setOperationMode] = useState<string>("Unknown");
+  const [valveStatus, setValveStatus] = useState<string>("Unknown");
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:7070/real-time/")
+
+    socket.onmessage = (event) => {
+      const infoData: Info = JSON.parse(event.data);
+
+      if (infoData.sensor) {
+        const sensorData = infoData.sensor;
+        setTimestamps(prevTimestamps => [...prevTimestamps, sensorData.timestamp]);
+        setMoistureData(prevMoistureData => [...prevMoistureData, sensorData.moisture]);
+        setTemperatureData(prevTemperatureData => [...prevTemperatureData, sensorData.temperature]);
+      }
+
+
+      setSystemState(infoData.state);
+      setOperationMode(infoData.sensor ? "Sensor" : "Timer");
+      setValveStatus(infoData.valve ? "Open" : "Closed");
+    }
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
   return (
     <div className='m-4 space-y-7'>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <DisplayCard
           title="State"
           description="Current operational state of the system."
-          value="Unknown"
+          value={systemState}
         />
 
         <DisplayCard
           title="Mode"
           description="Current operation mode of the system."
-          value="Timer"
+          value={operationMode}
         />
 
         <DisplayCard
           title="Valve"
           description="Current status of the valve."
-          value="Open"
+          value={valveStatus}
         />
       </div>
       <div>
@@ -123,7 +80,10 @@ function App() {
                 x="moisture"
                 xAxisKey="time"
                 yAxisLabel='Moisture Content (%)'
-                data={moisture_data}
+                data={moistureData.map((moisture, index) => ({
+                  time: timestamps[index],
+                  moisture: moisture
+                }))}
               />
             </CardContent>
           </Card>
@@ -136,7 +96,10 @@ function App() {
                 x="temp"
                 xAxisKey="time"
                 yAxisLabel="Temperature (°C)"
-                data={temp_data}
+                data={temperatureData.map((temp, index) => ({
+                  time: timestamps[index],
+                  temp: temp
+                }))}
               />
             </CardContent>
           </Card>

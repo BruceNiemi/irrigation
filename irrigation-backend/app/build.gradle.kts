@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("org.slf4j:slf4j-simple:2.0.10")
+    implementation("io.javalin:javalin:6.1.3")
     implementation("com.fazecast:jSerialComm:2.10.4")
 
     // Use the Kotlin JUnit 5 integration.

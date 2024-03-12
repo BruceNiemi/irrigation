@@ -11,6 +11,7 @@ class PollSensorState : public State {
  public:
   PollSensorState(MoistureSensor* sensor) : sensor(sensor) {}
   virtual State* execute() override;
+  virtual const String name() override { return "Poll Sensor"; };
 };
 
 #endif  //POLL_SENSOR_STATE_H_

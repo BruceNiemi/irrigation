@@ -5,5 +5,6 @@
 class DisableWaterSourceTimer : public State {
  public:
   virtual State* execute() override;
+  virtual const String name() override { return "Disable Water Source"; };
 };
 #endif  // DISABLE_WATER_SOURCE_TIMER_H_

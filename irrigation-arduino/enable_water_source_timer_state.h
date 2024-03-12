@@ -9,6 +9,7 @@ class EnableWaterSourceTimer : public State {
  public:
   virtual void enter() override;
   virtual State* execute() override;
+  virtual const String name() override { return "Enable Water Source"; };
 };
 
-#endif //ENABLE_WATER_SOURCE_TIMER_H_
+#endif  //ENABLE_WATER_SOURCE_TIMER_H_

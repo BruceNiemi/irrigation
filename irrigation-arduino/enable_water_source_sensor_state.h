@@ -13,5 +13,6 @@ class EnableWaterSourceSesorState : public State {
   EnableWaterSourceSesorState(MoistureSensor* sensor) : sensor(sensor) {}
   virtual void enter() override;
   virtual State* execute() override;
+    virtual const String name() override { return "Enable Water Source"; };
 };
 #endif  //ENABLE_WATER_SOURCE_SENSOR_STATE_H_

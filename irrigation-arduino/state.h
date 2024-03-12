@@ -10,6 +10,7 @@ class State {
     virtual ~State(){}
     virtual void enter(){};
     virtual State* execute() = 0;
+    virtual const String name() = 0;
 };
 
 #endif  // STATE_H_

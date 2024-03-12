@@ -2,6 +2,6 @@
 #include "idle_timer_state.h"
 
 State* DisableWaterSourceTimer::execute() {
-  Serial.println("transitioning to disable water source");
+//  Serial.println("transitioning to disable water source");
   return new IdleTimerState();
 }

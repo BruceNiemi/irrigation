@@ -9,7 +9,7 @@ void IdleSensorState::enter() {
 
 State* IdleSensorState::execute() {
   if (millis() > this->lastMillis + DELAY_IN_MILLIS) {
-    Serial.println("transitioning to enable water source sensor");
+  ///  Serial.println("transitioning to enable water source sensor");
     return new PollSensorState(sensor);
   }
 

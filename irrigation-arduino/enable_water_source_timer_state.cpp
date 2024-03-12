@@ -9,7 +9,7 @@ void EnableWaterSourceTimer::enter() {
 
 State* EnableWaterSourceTimer::execute() {
   if (millis() > this->lastMillis + DELAY_IN_MILLIS) {
-        Serial.println("transitioning to disable water source");
+///        Serial.println("transitioning to disable water source");
     return new DisableWaterSourceTimer();
   }
 
