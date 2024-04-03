@@ -1,3 +1,5 @@
+#include <Adafruit_MotorShield.h>
+
 #include "idle_sensor_state.h"
 #include "idle_timer_state.h"
 #include "moisture_sensor.h"

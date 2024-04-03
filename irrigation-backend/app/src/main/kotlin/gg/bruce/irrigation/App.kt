@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
 private val dataQueue: BlockingQueue<String> = LinkedBlockingQueue()
-private val clients = ArrayList<WsContext>()
+private var clients: WsContext? = null
 private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
 fun main() {
@@ -36,7 +36,7 @@ fun main() {
             if (!line.startsWith("DATA: ") || !line.endsWith("END")) {
                 continue
             }
-            println(line)
+
             dataQueue.add(line)
         }
     }.start()
@@ -46,7 +46,7 @@ fun main() {
         .ws("/real-time/") {
             it.onConnect { ctx ->
                 println("new connection")
-                clients.add(ctx)
+                clients = ctx
             }
         }.start(7070)
 
@@ -56,10 +56,8 @@ fun main() {
 
 fun send() {
     println("sending?")
-    val data = parseStringData(dataQueue.poll()) ?: return
-    clients.forEach {
-        it.send(data)
-    }
+    val data = parseStringData(dataQueue.take()) ?: return
+    clients?.send(data)
 }
 
 fun parseStringData(input: String?): Info? {

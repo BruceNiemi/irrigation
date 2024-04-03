@@ -32,9 +32,9 @@ function App() {
 
       if (infoData.sensor) {
         const sensorData = infoData.sensor;
-        setTimestamps(prevTimestamps => [...prevTimestamps, sensorData.timestamp].slice(-5));
-        setMoistureData(prevMoistureData => [...prevMoistureData, sensorData.moisture].slice(-5));
-        setTemperatureData(prevTemperatureData => [...prevTemperatureData, sensorData.temperature].slice(-5));
+        setTimestamps(prevTimestamps => [...prevTimestamps, sensorData.timestamp].splice(-5));
+        setMoistureData(prevMoistureData => [...prevMoistureData, sensorData.moisture].splice(-5));
+        setTemperatureData(prevTemperatureData => [...prevTemperatureData, sensorData.temperature].splice(-5));
       }
 
 
