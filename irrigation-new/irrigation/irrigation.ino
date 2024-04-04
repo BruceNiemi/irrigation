@@ -1,6 +1,8 @@
+#include <ArduinoJson.h>
 #include "Adafruit_seesaw.h"
 #include <AccelStepper.h>
 #include <Adafruit_MotorShield.h>
+
 
 Adafruit_MotorShield AFMSbot(0x61); // Rightmost jumper closed
 Adafruit_MotorShield AFMStop(0x60); // Default address, no jumpers
@@ -41,6 +43,7 @@ void setup() {
 }
 
 bool open = false;
+unsigned long lastMillis = 0;
 
 void loop() {
   float tempC = ss.getTemp();
@@ -49,7 +52,7 @@ void loop() {
   if(capread < 400 && !open) {
     
     // Move the stepper motor by 45 degrees in one direction
-    stepper1.moveTo(40);
+    stepper1.moveTo(35);
     
     // Wait for the motor to reach its target position
     while (stepper1.distanceToGo() != 0) {
@@ -58,7 +61,7 @@ void loop() {
     open = true;
   } else if (capread >= 400 && open) {
     // Move the stepper motor by 45 degrees in the opposite direction
-    stepper1.moveTo(-40);
+    stepper1.moveTo(-35);
     
     // Wait for the motor to reach its target position
     while (stepper1.distanceToGo() != 0) {
@@ -66,11 +69,23 @@ void loop() {
     }
     open = false;
   }
- 
+  
+  if(millis() > lastMillis + 5000) {
+    StaticJsonDocument<200> document;
 
-  Serial.print("Temperature: "); Serial.print(tempC); Serial.println("*C");
-  Serial.print("Capacitive: "); Serial.println(capread);
-  Serial.print("Ratio: "); Serial.println(getMoisture());
+    document["open"] = open;
+    document["moisture"] = getMoisture();
+    document["temp"] = tempC;
+
+    String jsonString;
+    serializeJson(document, jsonString);
+    Serial.println(jsonString);
+    lastMillis = millis();
+   }
+
+  // Serial.print("Temperature: "); Serial.print(tempC); Serial.println("*C");
+  // Serial.print("Capacitive: "); Serial.println(capread);
+  // Serial.print("Ratio: "); Serial.println(getMoisture());
   delay(100);
 }
 

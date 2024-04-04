@@ -5,23 +5,20 @@ import { DisplayCard } from './components/ui/displaycard'
 import { Chart } from './components/ui/chart'
 
 interface SensorData {
-  timestamp: string;
+  open: boolean;
   moisture: number;
-  temperature: number;
+  temp: number;
 }
 
 interface Info {
-  state: string;
-  valve: boolean;
-  sensor: SensorData | null;
+  timestamp: string;
+  sensor: SensorData;
 }
 
 function App() {
   const [moistureData, setMoistureData] = useState<number[]>([]);
   const [temperatureData, setTemperatureData] = useState<number[]>([]);
   const [timestamps, setTimestamps] = useState<string[]>([]);
-  const [systemState, setSystemState] = useState<string>("Unknown");
-  const [operationMode, setOperationMode] = useState<string>("Unknown");
   const [valveStatus, setValveStatus] = useState<string>("Unknown");
 
   useEffect(() => {
@@ -30,17 +27,12 @@ function App() {
     socket.onmessage = (event) => {
       const infoData: Info = JSON.parse(event.data);
 
-      if (infoData.sensor) {
-        const sensorData = infoData.sensor;
-        setTimestamps(prevTimestamps => [...prevTimestamps, sensorData.timestamp].splice(-5));
-        setMoistureData(prevMoistureData => [...prevMoistureData, sensorData.moisture].splice(-5));
-        setTemperatureData(prevTemperatureData => [...prevTemperatureData, sensorData.temperature].splice(-5));
-      }
-
-
-      setSystemState(infoData.state);
-      setOperationMode(infoData.sensor ? "Sensor" : "Timer");
-      setValveStatus(infoData.valve ? "Open" : "Closed");
+      const sensorData = infoData.sensor;
+      setTimestamps(prevTimestamps => [...prevTimestamps, infoData.timestamp].splice(-5));
+      setMoistureData(prevMoistureData => [...prevMoistureData, sensorData.moisture].splice(-5));
+      setTemperatureData(prevTemperatureData => [...prevTemperatureData, sensorData.temp].splice(-5));
+  
+      setValveStatus(sensorData.open ? "Open" : "Closed");
     }
 
     return () => {
@@ -52,15 +44,9 @@ function App() {
     <div className='m-4 space-y-7'>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <DisplayCard
-          title="State"
-          description="Current operational state of the system."
-          value={systemState}
-        />
-
-        <DisplayCard
-          title="Mode"
-          description="Current operation mode of the system."
-          value={operationMode}
+          title="Sensor Status"
+          description="Sensor status of the sensor."
+          value={"Connected"}
         />
 
         <DisplayCard
